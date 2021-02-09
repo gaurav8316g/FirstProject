@@ -22,7 +22,7 @@ public class HelloServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 	resp.setContentType("text/plain");
-	resp.getWriter().write("Maven web project deployed on Tomcat Project!");
+	resp.getWriter().write("Maven Git web project deployed on Tomcat Project!");
 	}
 
 }
