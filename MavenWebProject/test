@@ -135,3 +135,10 @@ WIF pool/provider	gcloud	Trust that one AWS role; no SA key
 Pub/Sub IAM	gcloud	Subscriber on the subscription
 VPC-SC ingress	Terraform 3-security	Allow that SA to call Pub/Sub from AWS
 Do not grant roles/pubsub.admin or project Owner to Splunk. Do not bind principalSet://…/workloadIdentityPools/splunk-aws/*. Unacked messages last 7 days; finish Splunk config in the same window as the sink.
+
+
+
+
+gcloud projects add-iam-policy-binding fdagcp-shared-shared-net \
+  --member="group:RB-FDAIT-GCP-firewall-admins@fda.hhs.gov" \
+  --role="roles/compute.networkUser"
