@@ -142,3 +142,25 @@ Do not grant roles/pubsub.admin or project Owner to Splunk. Do not bind princ
 gcloud projects add-iam-policy-binding fdagcp-shared-shared-net \
   --member="group:RB-FDAIT-GCP-firewall-admins@fda.hhs.gov" \
   --role="roles/compute.networkUser"
+
+
+HUB="fdagcp-shared-shared-net"
+GROUP="group:RB-FDAIT-GCP-firewall-admins@fda.hhs.gov"
+REGION="us-east4"
+for SUB in \
+  external-default \
+  non-prod-default \
+  intranet-default \
+  extranet-default \
+  shared-tools-hub-default \
+  palo-managment-default \
+  shared-tools-default
+do
+  echo "===== ${SUB} ====="
+  gcloud compute networks subnets get-iam-policy "${SUB}" \
+    --project="${HUB}" \
+    --region="${REGION}" \
+    --flatten="bindings[].members" \
+    --filter="bindings.members:${GROUP}" \
+    --format="table(bindings.role,bindings.members)"
+done
