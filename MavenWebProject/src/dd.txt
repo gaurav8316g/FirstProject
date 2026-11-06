@@ -400,3 +400,33 @@ firewall-admins-nva = {
     ]
   }
 }
+
+
+Filter both sinks use:
+
+protoPayload.metadata.@type="type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata"
+
+View in console (use this first)
+
+Set the picker to the organization (FDA org), not a project.
+Security → VPC Service Controls → Violation dashboard.
+That dashboard only works because of the reserved sink into fdagcp-audit-logs / vpc-sc.
+Open a row: principal, service (compute.googleapis.com), method (compute.networks.list), perimeter (platform), unique ID.
+View the raw log
+
+Open Logs Explorer in project fdagcp-audit-logs.
+Scope: that project (or the org if you have org-level Logging).
+Query:
+
+protoPayload.metadata.@type="type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata"
+protoPayload.methodName="compute.networks.list"
+Optional:
+
+
+protoPayload.resourceName:"fdagcp-shared-tools-firewall"
+OR protoPayload.authenticationInfo.principalEmail:"you@fda.gov"
+Useful fields: protoPayload.authenticationInfo.principalEmail, protoPayload.serviceName, protoPayload.methodName, protoPayload.metadata.violationReason, protoPayload.metadata.vpcServiceControlsUniqueIdentifier.
+
+If Logs Explorer itself 403s
+
+That is the same perimeter. console-log-viewers must allow your group (or org-admins) to call logging.googleapis.com on fdagcp-audit-logs, with access_levels = ["*"]. The firewall project’s IAM does not grant that.
