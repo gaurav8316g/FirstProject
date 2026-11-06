@@ -370,3 +370,33 @@ gcloud iam workload-identity-pools create-cred-config \
   --service-account="${SA_EMAIL}" \
   --aws \
   --output-file=./splunk-aws-credential-config.json
+
+
+
+
+
+firewall-admins-nva = {
+  from = {
+    access_levels = ["*"]
+    identities = [
+      "group:RB-FDAIT-GCP-firewall-admins@fda.hhs.gov",
+    ]
+  }
+  to = {
+    operations = [
+      { service_name = "compute.googleapis.com",              method_selectors = ["*"] },
+      { service_name = "networkconnectivity.googleapis.com",  method_selectors = ["*"] },
+      { service_name = "iam.googleapis.com",                  method_selectors = ["*"] },
+      { service_name = "logging.googleapis.com",              method_selectors = ["*"] },
+      { service_name = "monitoring.googleapis.com",           method_selectors = ["*"] },
+      { service_name = "cloudresourcemanager.googleapis.com", method_selectors = ["*"] },
+      { service_name = "storage.googleapis.com",              method_selectors = ["*"] },
+      { service_name = "iaptunnel.googleapis.com",            method_selectors = ["*"] },
+      { service_name = "oslogin.googleapis.com",              method_selectors = ["*"] },
+    ]
+    resources = [
+      "projects/<FIREWALL_PROJECT_NUMBER>",
+      "projects/<HUB_PROJECT_NUMBER>",
+    ]
+  }
+}
